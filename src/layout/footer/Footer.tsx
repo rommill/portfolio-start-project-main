@@ -2,6 +2,8 @@ import React from 'react';
 import {Icon} from "../../assets/components/icon/Icon";
 import styled from "styled-components";
 import {FlexWrapper} from "../../assets/components/FlexWrapper";
+import {theme} from "../../styles/Theme";
+import {font} from "../../styles/Common";
 
 export const Footer = () => {
     return (
@@ -11,7 +13,7 @@ export const Footer = () => {
                 <SocialList>
                     <SocialItem>
                         <SocialLink>
-                            <Icon height={"21px"} width={"21px"} viewBox={"0 0 21px 21px"} iconId={"facebook"}/>
+                            <Icon height={"210px"} width={"210px"} viewBox={"0 0 21px 21px"} iconId={""}/>
                         </SocialLink>
                     </SocialItem>
                     <SocialItem>
@@ -39,31 +41,46 @@ export const Footer = () => {
 };
 
 const StyledFooter = styled.footer`
-background-color: blue;
-    min-height: 20vh;
-    padding: 20px 0;
+background-color: ${theme.colors.primaryBg};
+    padding: 40px 0;
     transition: background-color 0.3s ease;
 
     &:hover {
-        background-color: darkblue; /* Меняем цвет при наведении */
+        background-color: #e8dfc5; /* Меняем цвет при наведении */
     }
 
     ;
 `
 const Name = styled.span`
-
+    ${font({family: "'Josefin Sans', sans-serif", weight:700, Fmax:22,Fmin: 16})}
+    letter-spacing: 3px;
 `
 const SocialList = styled.ul`
     display: flex;
-    gap: 30px;
+    gap: 20px;
+    margin: 30px 0;
 `
 const SocialItem = styled.li`
 
 
 `
 const SocialLink = styled.a`
+    background-color: rgba(255,255,255, 0.1);
+    border-radius: 50%;
+    width: 35px;   
+    height: 35px;
     
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    &:hover {
+        transform: translateY(-4px);
+    }
 `
-const Copyright = styled.small`
 
+const Copyright = styled.small`
+font-weight: 400;
+    font-size: 12px;
+    text-align: center;
+    opacity: 0.5;
 `
