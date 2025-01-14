@@ -9,10 +9,12 @@ import { Contact } from "./layout/header/sections/contacts/Contacts";
 import { Slogan } from "./layout/header/sections/slogan/Slogan";
 import { Footer } from "./layout/footer/Footer";
 import {GoTopBtn} from "./assets/components/goTopBtn/GoTopBtn";
+import {Particle} from "./assets/components/particle/Particle";
 
 function App() {
     return (
         <div className="App">
+            <Particle/>
             <Header />
             <Main id="home" />
             <Skills id="skills" />
