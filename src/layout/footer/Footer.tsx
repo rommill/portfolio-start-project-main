@@ -1,86 +1,152 @@
-import React from 'react';
-import {Icon} from "../../assets/components/icon/Icon";
-import styled from "styled-components";
-import {FlexWrapper} from "../../assets/components/FlexWrapper";
-import {theme} from "../../styles/Theme";
-import {font} from "../../styles/Common";
+import React, { useEffect, useRef, useState } from 'react';
+import styled from 'styled-components';
+import { FlexWrapper as OriginalFlexWrapper } from '../../assets/components/FlexWrapper';
+import { theme } from '../../styles/Theme';
+import { font } from '../../styles/Common';
+import linkedin from '../../assets/images/linkedin.png';
+import instagram from '../../assets/images/instagram.png';
+import pinterest from '../../assets/images/pinterest.png';
+import facebook from '../../assets/images/facebook.png';
 
 export const Footer = () => {
+    const [isVisible, setIsVisible] = useState(false);
+    const footerRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        const observer = new IntersectionObserver(
+            (entries) => {
+                if (entries[0].isIntersecting) {
+                    setIsVisible(true);
+                    observer.disconnect(); // Отключаем наблюдатель, как только секция стала видимой
+                }
+            },
+            {
+                threshold: 0.1, // Срабатывает, когда 10% секции становится видимым
+            }
+        );
+
+        if (footerRef.current) {
+            observer.observe(footerRef.current);
+        }
+
+        return () => {
+            if (footerRef.current) {
+                observer.unobserve(footerRef.current);
+            }
+        };
+    }, []);
+
     return (
-        <StyledFooter>
-            <FlexWrapper direction={"column"} align={"center"}>
-                <Name>Roman</Name>
+        <StyledFooter ref={footerRef}>
+            <FlexWrapper direction={'column'} align={'center'} isVisible={isVisible}>
+                <StyledName isVisible={isVisible}>Roman</StyledName>
                 <SocialList>
-                    <SocialItem>
-                        <SocialLink>
-                            <Icon height={"210px"} width={"210px"} viewBox={"0 0 21px 21px"} iconId={""}/>
+                    <SocialItem isVisible={isVisible}>
+                        <SocialLink href="https://www.facebook.com/share/1QB5HbyHtR/" target="_blank" rel="noopener noreferrer">
+                            <img src={facebook} alt="Facebook" />
                         </SocialLink>
                     </SocialItem>
-                    <SocialItem>
-                        <SocialLink>
-                            <Icon height={"21px"} width={"21px"} viewBox={"0 0 21px 21px"} iconId={"instagram"}/>
+                    <SocialItem isVisible={isVisible}>
+                        <SocialLink href="https://www.instagram.com" target="_blank" rel="noopener noreferrer">
+                            <img src={instagram} alt="Instagram" />
                         </SocialLink>
                     </SocialItem>
-                    <SocialItem>
-                        <SocialLink>
-                            <Icon height={"21px"} width={"21px"} viewBox={"0 0 21px 21px"} iconId={"twitter"}/>
+                    <SocialItem isVisible={isVisible}>
+                        <SocialLink href="https://www.linkedin.com/in/rommill-romanov-76220933b/?originalSubdomain=ee" target="_blank" rel="noopener noreferrer">
+                            <img src={linkedin} alt="LinkedIn" />
                         </SocialLink>
                     </SocialItem>
-                    <SocialItem>
-                        <SocialLink>
-                            <Icon height={"21px"} width={"21px"} viewBox={"0 0 21px 21px"} iconId={"pinterest"}/>
+                    <SocialItem isVisible={isVisible}>
+                        <SocialLink href="https://www.pinterest.com" target="_blank" rel="noopener noreferrer">
+                            <img src={pinterest} alt="Pinterest" />
                         </SocialLink>
                     </SocialItem>
-
                 </SocialList>
-                    <Copyright>Made by Roman  — Copyright 2024 © All Rights Reserved.</Copyright>
+                <StyledCopyright isVisible={isVisible}>
+                    Made by Roman — Copyright 2024 © All Rights Reserved.
+                </StyledCopyright>
             </FlexWrapper>
-
-            </StyledFooter>
+        </StyledFooter>
     );
 };
 
 const StyledFooter = styled.footer`
-background-color: ${theme.colors.primaryBg};
+    background-color: ${theme.colors.primaryBg};
     padding: 40px 0;
     transition: background-color 0.3s ease;
+    position: relative; /* Добавлено для отключения эффекта particles */
+`;
 
-    &:hover {
-        background-color: #e8dfc5; /* Меняем цвет при наведении */
+const FlexWrapper = styled(OriginalFlexWrapper)<{ isVisible: boolean }>`
+    gap: 20px;
+    opacity: ${({ isVisible }) => (isVisible ? 1 : 0)};
+    transform: ${({ isVisible }) => (isVisible ? 'translateY(0)' : 'translateY(20px)')};
+    transition: opacity 0.6s ease, transform 0.6s ease;
+
+    @media (max-width: 768px) {
+        flex-direction: column;
+        align-items: center;
     }
 
-    ;
-`
-const Name = styled.span`
-    ${font({family: "'Josefin Sans', sans-serif", weight:700, Fmax:22,Fmin: 16})}
+    @media (max-width: 480px) {
+        gap: 15px;
+    }
+`;
+
+const StyledName = styled.span<{ isVisible: boolean }>`
+    ${font({ family: "'Josefin Sans', sans-serif", weight: 700, Fmax: 22, Fmin: 16 })}
     letter-spacing: 3px;
-`
+    opacity: ${({ isVisible }) => (isVisible ? 1 : 0)};
+    transform: ${({ isVisible }) => (isVisible ? 'translateY(0)' : 'translateY(20px)')};
+    transition: opacity 0.6s ease, transform 0.6s ease;
+`;
+
 const SocialList = styled.ul`
     display: flex;
     gap: 20px;
     margin: 30px 0;
-`
-const SocialItem = styled.li`
+`;
 
+const SocialItem = styled.li<{ isVisible: boolean }>`
+    opacity: ${({ isVisible }) => (isVisible ? 1 : 0)};
+    transform: ${({ isVisible }) => (isVisible ? 'translateY(0)' : 'translateY(20px)')};
+    transition: opacity 0.6s ease, transform 0.6s ease;
+`;
 
-`
 const SocialLink = styled.a`
-    background-color: rgba(255,255,255, 0.1);
+    background-color: rgba(255, 255, 255, 0.1);
     border-radius: 50%;
-    width: 35px;   
-    height: 35px;
-    
+    width: 30px;
+    height: 30px;
     display: flex;
     justify-content: center;
     align-items: center;
-    &:hover {
-        transform: translateY(-4px);
-    }
-`
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 
-const Copyright = styled.small`
-font-weight: 400;
+    img {
+        width: 30px;
+        height: 30px;
+        transition: transform 0.3s ease;
+    }
+
+    &:hover {
+        transform: scale(1.1);
+        box-shadow: 0 14px 16px rgba(0, 0, 0, 0.2); /* Добавляем тень */
+        img {
+            transform: scale(1.1);
+        }
+    }
+`;
+
+
+const StyledCopyright = styled.small<{ isVisible: boolean }>`
+    font-weight: 400;
     font-size: 12px;
     text-align: center;
     opacity: 0.5;
-`
+    opacity: ${({ isVisible }) => (isVisible ? 1 : 0)};
+    transform: ${({ isVisible }) => (isVisible ? 'translateY(0)' : 'translateY(20px)')};
+    transition: opacity 0.6s ease, transform 0.6s ease;
+`;
+
+export default Footer;
